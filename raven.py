@@ -19,6 +19,48 @@ class RFit(Fit):
     self.validate()
 
   @property
+  def scanResolution(self):
+    """Returns the scan resolution in mm of the ship."""
+    try:
+      return self.ship.attributes[Attribute.scanResolution]
+    except (AttributeError, KeyError):
+      return None
+
+  @property
+  def targetRange(self):
+    """Returns the max target range in km of the ship."""
+    try:
+      return self.ship.attributes[Attribute.targetRange] / 1000
+    except (AttributeError, KeyError):
+      return None
+
+  @property
+  def maxTargets(self):
+    """Returns the max number of locked targets."""
+    try:
+      return self.ship.attributes[Attribute.maxTargets]
+    except (AttributeError, KeyError):
+      return None
+
+  @property
+  def scanStrength(self):
+    """Returns the scan strength of the ship."""
+    try:
+      shipAttribs = self.ship.attributes
+    except AttributeError:
+      return None
+
+    try:
+      radar = shipAttribs[Attribute.scanRadarStrength]
+      ladar = shipAttribs[Attribute.scanLadarStrength]
+      magnetometric = shipAttribs[Attribute.scanMagnetometricStrength]
+      gravimetric = shipAttribs[Attribute.scanGravimetricStrength]
+    except KeyError:
+      return None
+
+    return radar or ladar or magnetometric or gravimetric
+
+  @property
   def capacitor(self):
     """Returns details about the ship's capacitor.
 

@@ -3,6 +3,14 @@ class Attribute:
   mass = 4
   agility = 70
 
+  scanResolution = 564
+  targetRange = 76
+  scanRadarStrength = 208
+  scanLadarStrength = 209
+  scanMagnetometricStrength = 210
+  scanGravimetricStrength = 211
+  maxTargets = 192
+
   capacitorCapacity = 482
   capacitorRecharge = 55
 
