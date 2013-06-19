@@ -2,6 +2,9 @@ class Attribute:
   """Useful attribute ID constants."""
   mass = 4
   agility = 70
+  maxVelocity = 37
+  warpSpeedMultiplier = 600
+  signatureRadius = 552
 
   scanResolution = 564
   targetRange = 76

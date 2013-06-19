@@ -18,6 +18,8 @@ class RFit(Fit):
 
     self.validate()
 
+    self.baseWarpSpeed = 3
+
   @property
   def scanResolution(self):
     """Returns the scan resolution in mm of the ship."""
@@ -208,22 +210,56 @@ class RFit(Fit):
     }
 
   @property
+  def mass(self):
+    """Returns the mass of the ship in kg."""
+    try:
+      return self.ship.attributes[Attribute.mass]
+    except (AttributeError, KeyError):
+      return None
+
+  @property
+  def agility(self):
+    """Returns the agility of the ship."""
+    try:
+      return self.ship.attributes[Attribute.agility]
+    except (AttributeError, KeyError):
+      return None
+
+  @property
+  def speed(self):
+    """Returns the max speed of the ship in m/s."""
+    try:
+      return self.ship.attributes[Attribute.maxVelocity]
+    except (AttributeError, KeyError):
+      return None
+
+  @property
+  def signatureRadius(self):
+    """Returns the signature radius of the ship."""
+    try:
+      return self.ship.attributes[Attribute.signatureRadius]
+    except (AttributeError, KeyError):
+      return None
+
+  @property
+  def warpSpeed(self):
+    """Returns the warp speed of the ship in AU/s."""
+    try:
+      multiplier = self.ship.attributes[Attribute.warpSpeedMultiplier]
+    except (AttributeError, KeyError):
+      return None
+
+    return multiplier * self.baseWarpSpeed
+
+  @property
   def alignTime(self):
     """Returns the time needed for the ship to enter warp.
 
     Returns:
       Floating point number representing align time in seconds.
     """
-    try:
-      shipAttribs = self.ship.attributes
-    except AttributeError:
-      return None
-
-    try:
-      agility = shipAttribs[Attribute.agility]
-      mass = shipAttribs[Attribute.mass]
-    except KeyError:
-      return None
+    agility = self.agility
+    mass = self.mass
 
     alignTime = -math.log(0.25) * agility * mass / 1000000
     return alignTime
