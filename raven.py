@@ -45,8 +45,8 @@ class RFit(Fit):
       return None
 
   @property
-  def scanStrength(self):
-    """Returns the scan strength of the ship."""
+  def sensorStrength(self):
+    """Returns the sensor strength of the ship."""
     try:
       shipAttribs = self.ship.attributes
     except AttributeError:
