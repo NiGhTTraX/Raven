@@ -94,6 +94,8 @@ class RFit(Fit):
   def shield(self):
     """Returns details about the ship's shield.
 
+    Resists are integers from 0 to 100.
+
     Returns:
       A dictionary containing:
         capacity: Shield capacity.
@@ -121,21 +123,27 @@ class RFit(Fit):
       return None
 
     recharge /= 1000 # milliseconds
+    em = int((1.0 - em) * 100)
+    explosive = int((1.0 - explosive) * 100)
+    kinetic = int((1.0 - kinetic) * 100)
+    thermal = int((1.0 - thermal) * 100)
 
     return {
         "capacity": capacity,
         "recharge": recharge,
         "resists": {
-            "em": 1.0 - em,
-            "explosive": 1.0 - explosive,
-            "kinetic": 1.0 - kinetic,
-            "thermal": 1.0 - thermal
+            "em": em,
+            "explosive": explosive,
+            "kinetic": kinetic,
+            "thermal": thermal
         }
     }
 
   @property
   def armor(self):
     """Returns details about the ship's armor.
+
+    Resists are integers from 0 to 100.
 
     Returns:
       A dictionary containing:
@@ -161,19 +169,26 @@ class RFit(Fit):
     except KeyError:
       return None
 
+    em = int((1.0 - em) * 100)
+    explosive = int((1.0 - explosive) * 100)
+    kinetic = int((1.0 - kinetic) * 100)
+    thermal = int((1.0 - thermal) * 100)
+
     return {
         "capacity": capacity,
         "resists": {
-            "em": 1.0 - em,
-            "explosive": 1.0 - explosive,
-            "kinetic": 1.0 - kinetic,
-            "thermal": 1.0 - thermal
+            "em": em,
+            "explosive": explosive,
+            "kinetic": kinetic,
+            "thermal": thermal
         }
     }
 
   @property
   def hull(self):
     """Returns details about the ship's hull.
+
+    Resists are integers from 0 to 100.
 
     Returns:
       A dictionary containing:
@@ -199,13 +214,18 @@ class RFit(Fit):
     except KeyError:
       return None
 
+    em = int((1.0 - em) * 100)
+    explosive = int((1.0 - explosive) * 100)
+    kinetic = int((1.0 - kinetic) * 100)
+    thermal = int((1.0 - thermal) * 100)
+
     return {
         "capacity": capacity,
         "resists": {
-            "em": 1.0 - em,
-            "explosive": 1.0 - explosive,
-            "kinetic": 1.0 - kinetic,
-            "thermal": 1.0 - thermal
+            "em": em,
+            "explosive": explosive,
+            "kinetic": kinetic,
+            "thermal": thermal
         }
     }
 
