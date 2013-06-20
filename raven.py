@@ -1,7 +1,7 @@
 from eos import Ship, Skill
 from eos.fit import Fit
 
-from const import Attribute, Skills
+from .const import Attribute, Skills
 
 import math
 
