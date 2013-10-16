@@ -284,3 +284,49 @@ class RFit(Fit):
     alignTime = -math.log(0.25) * agility * mass / 1000000
     return alignTime
 
+  @property
+  def slots(self):
+    """Get the number of slots for a given ship.
+
+    Returns:
+      A dictionary.
+    """
+    try:
+      highSlots = self.ship.attributes[Attribute.highSlots]
+      medSlots = self.ship.attributes[Attribute.medSlots]
+      lowSlots = self.ship.attributes[Attribute.lowSlots]
+    except (AttributeError, KeyError):
+      # This is a T3 ship.
+      highSlots = medSlots = lowSlots = 0
+
+    try:
+      rigSlots = self.ship.attributes[Attribute.rigSlots]
+    except (AttributeError, KeyError):
+      rigSlots = 0
+
+    try:
+      subSlots = self.ship.attributes[Attribute.subSlots]
+    except (AttributeError, KeyError):
+      subSlots = 0
+
+    # Get missile and turret slots.
+    try:
+      missileSlots = self.ship.attributes[Attribute.missileSlots]
+    except (AttributeError, KeyError):
+      missileSlots = 0
+
+    try:
+      turretSlots = self.ship.attributes[Attribute.turretSlots]
+    except (AttributeError, KeyError):
+      turretSlots = 0
+
+    return {
+        "highSlots": int(highSlots),
+        "medSlots": int(medSlots),
+        "lowSlots": int(lowSlots),
+        "rigSlots": int(rigSlots),
+        "subSlots": int(subSlots),
+        "turretSlots": int(turretSlots),
+        "missileSlots": int(missileSlots)
+    }
+
