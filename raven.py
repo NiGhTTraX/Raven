@@ -1,4 +1,5 @@
 from eos import Ship, Skill
+from eos import eos as eosModule
 from eos.fit import Fit
 
 from .const import Attribute, Skills
@@ -8,6 +9,16 @@ import math
 
 class RFit(Fit):
   """Inherits from eos' Fit and adds high-level methods."""
+
+  def __getstate__(self):
+    state = self.__dict__.copy()
+    del state["_Fit__eos"]
+    return state
+
+  def __setstate__(self, state):
+    self.__dict__ = state
+    self.__dict__["_Fit__eos"] = eosModule.default_instance
+
   def __init__(self, typeID):
     super().__init__()
     self.ship = Ship(typeID)
