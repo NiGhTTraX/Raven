@@ -31,45 +31,35 @@ class RFit(Fit):
 
     self.baseWarpSpeed = 3
 
+  def _getAttribute(self, attrID, default = None):
+    try:
+      return self.ship.attributes[attrID]
+    except (AttributeError, KeyError):
+      return default or None
+
   @property
   def scanResolution(self):
     """Returns the scan resolution in mm of the ship."""
-    try:
-      return self.ship.attributes[Attribute.scanResolution]
-    except (AttributeError, KeyError):
-      return None
+    return self._getAttribute(Attribute.scanResolution)
 
   @property
   def targetRange(self):
-    """Returns the max target range in km of the ship."""
-    try:
-      return self.ship.attributes[Attribute.targetRange] / 1000
-    except (AttributeError, KeyError):
-      return None
+    """Returns the max target range in metres of the ship."""
+    return self._getAttribute(Attribute.targetRange)
 
   @property
   def maxTargets(self):
     """Returns the max number of locked targets."""
-    try:
-      return self.ship.attributes[Attribute.maxTargets]
-    except (AttributeError, KeyError):
-      return None
+    return self._getAttribute(Attribute.maxTargets)
 
   @property
   def sensorStrength(self):
     """Returns the sensor strength of the ship."""
-    try:
-      shipAttribs = self.ship.attributes
-    except AttributeError:
-      return None
-
-    try:
-      radar = shipAttribs[Attribute.scanRadarStrength]
-      ladar = shipAttribs[Attribute.scanLadarStrength]
-      magnetometric = shipAttribs[Attribute.scanMagnetometricStrength]
-      gravimetric = shipAttribs[Attribute.scanGravimetricStrength]
-    except KeyError:
-      return None
+    # TODO: also return type of sensor
+    radar = self._getAttribute(Attribute.scanRadarStrength)
+    ladar = self._getAttribute(Attribute.scanLadarStrength)
+    magnetometric = self._getAttribute(Attribute.scanMagnetometricStrength)
+    gravimetric = self._getAttribute(Attribute.scanGravimetricStrength)
 
     return radar or ladar or magnetometric or gravimetric
 
@@ -83,16 +73,8 @@ class RFit(Fit):
         recharge: Capacitor recharge time as a float.
       }
     """
-    try:
-      shipAttribs = self.ship.attributes
-    except AttributeError:
-      return None
-
-    try:
-      capacity = shipAttribs[Attribute.capacitorCapacity]
-      recharge = shipAttribs[Attribute.capacitorRecharge]
-    except KeyError:
-      return None
+    capacity = self._getAttribute(Attribute.capacitorCapacity)
+    recharge = self._getAttribute(Attribute.capacitorRecharge)
 
     recharge /= 1000 # milliseconds
 
@@ -118,20 +100,12 @@ class RFit(Fit):
           thermal: Thermal resistance.
         }
     """
-    try:
-      shipAttribs = self.ship.attributes
-    except AttributeError:
-      return None
-
-    try:
-      capacity = shipAttribs[Attribute.shieldCapacity]
-      recharge = shipAttribs[Attribute.shieldRecharge]
-      em = shipAttribs[Attribute.shieldEM]
-      explosive = shipAttribs[Attribute.shieldExplosive]
-      kinetic = shipAttribs[Attribute.shieldKinetic]
-      thermal = shipAttribs[Attribute.shieldThermal]
-    except KeyError:
-      return None
+    capacity = self._getAttribute(Attribute.shieldCapacity)
+    recharge = self._getAttribute(Attribute.shieldRecharge)
+    em = self._getAttribute(Attribute.shieldEM)
+    explosive = self._getAttribute(Attribute.shieldExplosive)
+    kinetic = self._getAttribute(Attribute.shieldKinetic)
+    thermal = self._getAttribute(Attribute.shieldThermal)
 
     recharge /= 1000 # milliseconds
     em = int((1.0 - em) * 100)
@@ -166,19 +140,11 @@ class RFit(Fit):
           thermal: Thermal resistance.
         }
     """
-    try:
-      shipAttribs = self.ship.attributes
-    except AttributeError:
-      return None
-
-    try:
-      capacity = shipAttribs[Attribute.armorCapacity]
-      em = shipAttribs[Attribute.armorEM]
-      explosive = shipAttribs[Attribute.armorExplosive]
-      kinetic = shipAttribs[Attribute.armorKinetic]
-      thermal = shipAttribs[Attribute.armorThermal]
-    except KeyError:
-      return None
+    capacity = self._getAttribute(Attribute.armorCapacity)
+    em = self._getAttribute(Attribute.armorEM)
+    explosive = self._getAttribute(Attribute.armorExplosive)
+    kinetic = self._getAttribute(Attribute.armorKinetic)
+    thermal = self._getAttribute(Attribute.armorThermal)
 
     em = int((1.0 - em) * 100)
     explosive = int((1.0 - explosive) * 100)
@@ -211,19 +177,11 @@ class RFit(Fit):
           thermal: Thermal resistance.
         }
     """
-    try:
-      shipAttribs = self.ship.attributes
-    except AttributeError:
-      return None
-
-    try:
-      capacity = shipAttribs[Attribute.hullCapacity]
-      em = shipAttribs[Attribute.hullEM]
-      explosive = shipAttribs[Attribute.hullExplosive]
-      kinetic = shipAttribs[Attribute.hullKinetic]
-      thermal = shipAttribs[Attribute.hullThermal]
-    except KeyError:
-      return None
+    capacity = self._getAttribute(Attribute.hullCapacity)
+    em = self._getAttribute(Attribute.hullEM)
+    explosive = self._getAttribute(Attribute.hullExplosive)
+    kinetic = self._getAttribute(Attribute.hullKinetic)
+    thermal = self._getAttribute(Attribute.hullThermal)
 
     em = int((1.0 - em) * 100)
     explosive = int((1.0 - explosive) * 100)
@@ -243,42 +201,27 @@ class RFit(Fit):
   @property
   def mass(self):
     """Returns the mass of the ship in kg."""
-    try:
-      return self.ship.attributes[Attribute.mass]
-    except (AttributeError, KeyError):
-      return None
+    return self._getAttribute(Attribute.mass)
 
   @property
   def agility(self):
     """Returns the agility of the ship."""
-    try:
-      return self.ship.attributes[Attribute.agility]
-    except (AttributeError, KeyError):
-      return None
+    return self._getAttribute(Attribute.agility)
 
   @property
   def speed(self):
     """Returns the max speed of the ship in m/s."""
-    try:
-      return self.ship.attributes[Attribute.maxVelocity]
-    except (AttributeError, KeyError):
-      return None
+    return self._getAttribute(Attribute.maxVelocity)
 
   @property
   def signatureRadius(self):
     """Returns the signature radius of the ship."""
-    try:
-      return self.ship.attributes[Attribute.signatureRadius]
-    except (AttributeError, KeyError):
-      return None
+    return self._getAttribute(Attribute.signatureRadius)
 
   @property
   def warpSpeed(self):
     """Returns the warp speed of the ship in AU/s."""
-    try:
-      multiplier = self.ship.attributes[Attribute.warpSpeedMultiplier]
-    except (AttributeError, KeyError):
-      return None
+    multiplier = self._getAttribute(Attribute.warpSpeedMultiplier)
 
     return multiplier * self.baseWarpSpeed
 
@@ -302,34 +245,21 @@ class RFit(Fit):
     Returns:
       A dictionary.
     """
-    try:
-      highSlots = self.ship.attributes[Attribute.highSlots]
-      medSlots = self.ship.attributes[Attribute.medSlots]
-      lowSlots = self.ship.attributes[Attribute.lowSlots]
-    except (AttributeError, KeyError):
+    highSlots = self._getAttribute(Attribute.highSlots)
+    medSlots = self._getAttribute(Attribute.medSlots)
+    lowSlots = self._getAttribute(Attribute.lowSlots)
+
+    if None in [highSlots, medSlots, lowSlots]:
       # This is a T3 ship.
       highSlots = medSlots = lowSlots = 0
 
-    try:
-      rigSlots = self.ship.attributes[Attribute.rigSlots]
-    except (AttributeError, KeyError):
-      rigSlots = 0
-
-    try:
-      subSlots = self.ship.attributes[Attribute.subSlots]
-    except (AttributeError, KeyError):
-      subSlots = 0
+    # Get rigs and subs.
+    rigSlots = self._getAttribute(Attribute.rigSlots, 0)
+    subSlots = self._getAttribute(Attribute.subSlots, 0)
 
     # Get missile and turret slots.
-    try:
-      missileSlots = self.ship.attributes[Attribute.missileSlots]
-    except (AttributeError, KeyError):
-      missileSlots = 0
-
-    try:
-      turretSlots = self.ship.attributes[Attribute.turretSlots]
-    except (AttributeError, KeyError):
-      turretSlots = 0
+    missileSlots = self._getAttribute(Attribute.missileSlots, 0)
+    turretSlots = self._getAttribute(Attribute.turretSlots, 0)
 
     return {
         "highSlots": int(highSlots),
