@@ -1,39 +1,21 @@
-from eos import Ship, Skill
-from eos import eos as eosModule
-from eos.fit import Fit
-
-from .const import Attribute, Skills
+from .const import Attribute
 
 import math
 
 
-class RFit(Fit):
-  """Inherits from eos' Fit and adds high-level methods."""
+class Raven(object):
+  """High level stats calculator for Eos fits."""
 
-  def __getstate__(self):
-    state = self.__dict__.copy()
-    del state["_Fit__eos"]
-    return state
+  def __init__(self, fit):
+    self.fit = fit
+    self._ship = fit.ship
 
-  def __setstate__(self, state):
-    self.__dict__ = state
-    self.__dict__["_Fit__eos"] = eosModule.default_instance
-
-  def __init__(self, typeID):
-    super().__init__()
-    self.ship = Ship(typeID)
-
-    # Set all skills to level V.
-    for skill in Skills.allSkills:
-      self.skills.add(Skill(skill, level=5))
-
-    self.validate()
-
+    # Hardcode this here since it's not in any table.
     self.baseWarpSpeed = 3
 
   def _getAttribute(self, attrID, default = None):
     try:
-      return self.ship.attributes[attrID]
+      return self._ship.attributes[attrID]
     except (AttributeError, KeyError):
       return default or None
 

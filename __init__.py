@@ -1,1 +1,1 @@
-from .raven import RFit
+from .raven import Raven
