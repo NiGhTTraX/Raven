@@ -108,10 +108,10 @@ class RFit(Fit):
     thermal = self._getAttribute(Attribute.shieldThermal)
 
     recharge /= 1000 # milliseconds
-    em = int((1.0 - em) * 100)
-    explosive = int((1.0 - explosive) * 100)
-    kinetic = int((1.0 - kinetic) * 100)
-    thermal = int((1.0 - thermal) * 100)
+    em = 1.0 - em
+    explosive = 1.0 - explosive
+    kinetic = 1.0 - kinetic
+    thermal = 1.0 - thermal
 
     return {
         "capacity": capacity,
@@ -146,10 +146,10 @@ class RFit(Fit):
     kinetic = self._getAttribute(Attribute.armorKinetic)
     thermal = self._getAttribute(Attribute.armorThermal)
 
-    em = int((1.0 - em) * 100)
-    explosive = int((1.0 - explosive) * 100)
-    kinetic = int((1.0 - kinetic) * 100)
-    thermal = int((1.0 - thermal) * 100)
+    em = 1.0 - em
+    explosive = 1.0 - explosive
+    kinetic = 1.0 - kinetic
+    thermal = 1.0 - thermal
 
     return {
         "capacity": capacity,
@@ -183,10 +183,10 @@ class RFit(Fit):
     kinetic = self._getAttribute(Attribute.hullKinetic)
     thermal = self._getAttribute(Attribute.hullThermal)
 
-    em = int((1.0 - em) * 100)
-    explosive = int((1.0 - explosive) * 100)
-    kinetic = int((1.0 - kinetic) * 100)
-    thermal = int((1.0 - thermal) * 100)
+    em = 1.0 - em
+    explosive = 1.0 - explosive
+    kinetic = 1.0 - kinetic
+    thermal = 1.0 - thermal
 
     return {
         "capacity": capacity,
