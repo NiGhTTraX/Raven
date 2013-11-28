@@ -271,3 +271,48 @@ class RFit(Fit):
         "missileSlots": int(missileSlots)
     }
 
+  def _ehp(self, layer, multipliers):
+    em = layer["capacity"] / (1 - layer["resists"]["em"])
+    explosive = layer["capacity"] / (1 - layer["resists"]["explosive"])
+    kinetic = layer["capacity"] / (1 - layer["resists"]["kinetic"])
+    thermal = layer["capacity"] / (1 - layer["resists"]["thermal"])
+
+    raw = [em, explosive, kinetic, thermal]
+    total = 0
+    for k, v in enumerate(raw):
+      total += v * multipliers[k]
+
+    return total
+
+  def get_ehp(self, damageProfile = None):
+    """Get effective hitpoints of ship based on given damage profile.
+
+    Args:
+      damageProfile: Incoming damage distribution in the form
+      [em, explosive, kinetic, thermal]
+
+    Returns:
+      A dictionary containing the effective hitpoints for shield, armor and
+      hull.
+    """
+    if damageProfile is None:
+      damageProfile = [1, 1, 1, 1]
+
+    totalDamage = sum(damageProfile)
+    emMultiplier = damageProfile[0] / totalDamage
+    explosiveMultiplier = damageProfile[1] / totalDamage
+    kineticMultiplier = damageProfile[2] / totalDamage
+    thermalMultiplier = 1.0 - emMultiplier - explosiveMultiplier - kineticMultiplier
+
+    multipliers = [emMultiplier, explosiveMultiplier, kineticMultiplier, thermalMultiplier]
+
+    effectiveShield = self._ehp(self.shield, multipliers)
+    effectiveArmor = self._ehp(self.armor, multipliers)
+    effectiveHull = self._ehp(self.hull, multipliers)
+
+    return {
+        "shield": effectiveShield,
+        "armor": effectiveArmor,
+        "hull": effectiveHull
+    }
+
